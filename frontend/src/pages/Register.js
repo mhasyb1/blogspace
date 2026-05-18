@@ -22,9 +22,12 @@ export default function Register() {
       toast.success('Account created! Please log in.');
       navigate('/login');
     } catch (err) {
+      console.error('Register error:', err.response ?? err);
       const data = err.response?.data;
       if (data && typeof data === 'object') {
         setErrors(data);
+      } else if (typeof data === 'string') {
+        setErrors({ non_field_errors: [data] });
       } else {
         setErrors({ non_field_errors: ['Registration failed. Please try again.'] });
       }
@@ -33,8 +36,16 @@ export default function Register() {
     }
   };
 
-  const fieldError = (field) =>
-    errors[field] ? <p className="form-error">{errors[field][0]}</p> : null;
+  const formatError = (error) => {
+    if (!error) return null;
+    if (Array.isArray(error)) return error.join(' ');
+    return error;
+  };
+
+  const fieldError = (field) => {
+    const message = formatError(errors[field]);
+    return message ? <p className="form-error">{message}</p> : null;
+  };
 
   return (
     <div className="auth-page">
@@ -43,7 +54,7 @@ export default function Register() {
         <p className="auth-subtitle">Join BlogSpace today — it's free</p>
 
         {errors.non_field_errors && (
-          <div className="alert alert-error">{errors.non_field_errors[0]}</div>
+          <div className="alert alert-error">{formatError(errors.non_field_errors)}</div>
         )}
 
         <form onSubmit={handleSubmit}>
