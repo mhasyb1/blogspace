@@ -65,6 +65,31 @@ Or use **start-dev.bat** to launch both servers at once.
 
 ---
 
+## Production Deployment
+
+### Backend (Railway)
+1. Push the repo to GitHub.
+2. On Railway, create a new project and connect the GitHub repo.
+3. Use the `backend` directory as the root for deployment.
+4. Add environment variables:
+   - `SECRET_KEY`
+   - `DEBUG=False`
+   - `ALLOWED_HOSTS=your-railway-hostname.railway.app,localhost`
+   - `DATABASE_URL=mysql://user:password@host:3306/database` (Railway MySQL plugin)
+   - `CORS_ALLOWED_ORIGINS=http://localhost:3000,https://your-frontend.vercel.app`
+5. Railway will deploy the Django app and provide a backend URL.
+
+### Frontend (Vercel)
+1. On Vercel, import the GitHub repository.
+2. Set the root directory to `frontend`.
+3. Use build command: `npm run build`.
+4. Use output directory: `build`.
+5. Add environment variable:
+   - `REACT_APP_API_URL=https://your-backend.railway.app/api`
+6. Deploy and note the Vercel URL.
+
+---
+
 ## API Endpoints
 
 | Method | Endpoint                | Description            | Auth     |
