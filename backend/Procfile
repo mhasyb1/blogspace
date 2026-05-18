@@ -1,1 +1,1 @@
-web: gunicorn core.wsgi:application
+web: /app/.venv/bin/python -m pip install --quiet setuptools && /app/.venv/bin/gunicorn core.wsgi:application
